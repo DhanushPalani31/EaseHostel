@@ -35,32 +35,34 @@ app.set('io', io);
 
 connectDB();
 
+
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
-
 const allowedOrigins = [
+  'https://easyhostelservice.netlify.app',
+  'https://easehostel.netlify.app',
   process.env.CLIENT_URL,
   'http://localhost:5173',
-  'http://localhost:3000',
-
-  'https://easehostel.netlify.app'
-].filter(Boolean); 
+  'http://localhost:3000'
+].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-
+    
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    callback(new Error(`CORS blocked: ${origin}`));
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    console.log('CORS blocked origin:', origin);
+    return callback(null, true); 
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
 }));
+
+app.options('*', cors());
 
 
 const globalLimiter = rateLimit({
@@ -71,7 +73,6 @@ const globalLimiter = rateLimit({
   message: { success: false, message: 'Too many requests, please try again later.' }
 });
 app.use('/api', globalLimiter);
-
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -95,6 +96,7 @@ app.use('/api/coupons',       couponRoutes);
 app.use('/api/users',         userRoutes);
 app.use('/api/analytics',     analyticsRoutes);
 app.use('/api/wishlist',      wishlistRoutes);
+
 
 app.use(notFound);
 app.use(errorHandler);
