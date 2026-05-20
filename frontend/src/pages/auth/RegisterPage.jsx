@@ -49,7 +49,7 @@ export default function RegisterPage() {
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          <Input label="Full Name" type="text" icon={User} placeholder="Your Name" value={form.name} onChange={set('name')} required autoFocus />
+          <Input label="Full Name" type="text" icon={User} placeholder="Dhanush P" value={form.name} onChange={set('name')} required autoFocus />
 
           <Input label="Email Address" type="email" icon={Mail} placeholder="you@hostel.edu" value={form.email} onChange={set('email')} required />
 
