@@ -15,7 +15,7 @@ A production-ready full-stack MERN SaaS application combining V1 (product orderi
 | Real-time | Socket.IO |
 | Storage | Cloudinary |
 | Email | Nodemailer |
-| Container | Docker + Nginx |
+
 
 ---
 
@@ -105,7 +105,6 @@ hostelease/
 │   ├── server.js
 │   ├── package.json
 │   ├── .env.example
-│   ├── Dockerfile
 │   └── nodemon.json
 │
 └── frontend/
