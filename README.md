@@ -452,7 +452,4 @@ Create free cluster → get connection string → set as `MONGO_URI`
 - Staff performance leaderboard
 - Platform analytics (most used delivery apps)
 
----
 
-## 📄 License
-MIT — Built for hostel students everywhere 🎓
