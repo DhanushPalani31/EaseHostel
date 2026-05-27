@@ -28,10 +28,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   next();
 });
 
-/**
- * authorize – role-based access control (RBAC)
- * Usage: authorize('admin') or authorize('admin', 'student')
- */
+
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {

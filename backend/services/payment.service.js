@@ -4,9 +4,7 @@ import Order from '../models/Order.js';
 import { Payment, Notification } from '../models/secondary.models.js';
 import { PAYMENT_STATUS, PAYMENT_GATEWAY, ORDER_STATUS, NOTIFICATION_TYPES } from '../constants/index.js';
 
-// ── Lazy Razorpay instance ─────────────────────────────────────────
-// Do NOT instantiate at module load time — dotenv may not have run yet.
-// Call getRazorpay() inside each method instead.
+
 let _razorpay = null;
 const getRazorpay = () => {
   if (!_razorpay) {
@@ -22,9 +20,7 @@ const getRazorpay = () => {
 };
 
 class PaymentService {
-  /**
-   * Create a Razorpay order for an existing Order document
-   */
+  
   async createRazorpayOrder(orderId, userId) {
     const order = await Order.findOne({ _id: orderId, user: userId });
     if (!order) {
@@ -38,11 +34,11 @@ class PaymentService {
       notes:    { orderId: order._id.toString(), userId: userId.toString() }
     });
 
-    // Persist the razorpay order id
+  
     order.razorpayOrderId = razorpayOrder.id;
     await order.save();
 
-    // Create a payment record in pending state
+    
     await Payment.create({
       user:           userId,
       order:          orderId,
@@ -60,12 +56,9 @@ class PaymentService {
     };
   }
 
-  /**
-   * Verify Razorpay payment signature (HMAC SHA256)
-   * This is the critical security step – never skip it.
-   */
+  
   async verifyPayment({ razorpayOrderId, razorpayPaymentId, razorpaySignature, orderId }) {
-    // 1. Verify signature
+   
     const body      = `${razorpayOrderId}|${razorpayPaymentId}`;
     const expected  = crypto
       .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
@@ -77,7 +70,7 @@ class PaymentService {
       err.statusCode = 400; throw err;
     }
 
-    // 2. Update Order
+    
     const order = await Order.findById(orderId);
     if (!order) {
       const err = new Error('Order not found'); err.statusCode = 404; throw err;
@@ -89,13 +82,13 @@ class PaymentService {
     order.statusHistory.push({ status: ORDER_STATUS.PROCESSING, note: 'Payment verified' });
     await order.save();
 
-    // 3. Update Payment record
+   
     await Payment.findOneAndUpdate(
       { razorpayOrderId },
       { transactionId: razorpayPaymentId, paymentStatus: PAYMENT_STATUS.PAID }
     );
 
-    // 4. Create notification
+    
     await Notification.create({
       user:    order.user,
       message: `Payment of ₹${order.totalAmount} confirmed for order #${order.invoiceId}`,
@@ -106,9 +99,7 @@ class PaymentService {
     return order;
   }
 
-  /**
-   * Get payment history for a user
-   */
+  
   async getUserPayments(userId) {
     return await Payment.find({ user: userId })
       .populate('order', 'invoiceId totalAmount orderStatus')
@@ -116,9 +107,7 @@ class PaymentService {
       .lean();
   }
 
-  /**
-   * Analytics: total revenue, by gateway, by day (admin)
-   */
+ 
   async getPaymentAnalytics() {
     const [totalRevenue, byGateway, dailyRevenue] = await Promise.all([
       Payment.aggregate([

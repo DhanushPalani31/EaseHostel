@@ -5,19 +5,6 @@ import { sendToUser } from '../config/socket.js';
 import { NOTIFICATION_TYPES } from '../constants/index.js';
 import crypto from 'crypto';
 
-/**
- * Delivery Status State Machine:
- * Requested → Accepted → Waiting at Gate → Picked Up → Out for Delivery → Delivered
- *
- * Each transition triggers:
- * 1. Database update
- * 2. statusHistory append
- * 3. Real-time socket event to student
- * 4. Push notification
- *
- * This architecture scales to SMS/WhatsApp notifications in the future
- * by simply adding a notification adapter at step 4.
- */
 class ExternalDeliveryService {
   /**
    * Student submits a parcel pickup request.
