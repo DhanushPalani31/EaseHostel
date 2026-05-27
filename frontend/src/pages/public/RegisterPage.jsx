@@ -8,11 +8,11 @@ import { useAuth } from '../../hooks/index.js';
 import { slideUp } from '../../animations/variants.js';
 
 const FIELDS = [
-  { name: 'name',        label: 'Full name',      icon: User,  type: 'text',     placeholder: 'Arjun Sharma' },
+  { name: 'name',        label: 'Full name',      icon: User,  type: 'text',     placeholder: 'Dhanush P' },
   { name: 'email',       label: 'Email address',  icon: Mail,  type: 'email',    placeholder: 'you@hostel.edu' },
-  { name: 'phoneNumber', label: 'Phone number',   icon: Phone, type: 'tel',      placeholder: '9876543210' },
+  { name: 'phoneNumber', label: 'Phone number',   icon: Phone, type: 'tel',      placeholder: '6383204439' },
   { name: 'hostelBlock', label: 'Hostel block',   icon: Home,  type: 'text',     placeholder: 'A' },
-  { name: 'roomNumber',  label: 'Room number',    icon: Home,  type: 'text',     placeholder: '101' },
+  { name: 'roomNumber',  label: 'Room number',    icon: Home,  type: 'text',     placeholder: '308' },
 ];
 
 export default function RegisterPage() {
