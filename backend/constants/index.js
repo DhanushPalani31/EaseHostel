@@ -1,4 +1,4 @@
-// ─── Order Status ──────────────────────────────────────────────────
+// ─── Order Status ─────────────────────────────────────────────────
 export const ORDER_STATUS = {
   PENDING:    'Pending',
   PROCESSING: 'Processing',
