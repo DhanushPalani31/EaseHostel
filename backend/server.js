@@ -69,8 +69,7 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 
-// Handle preflight requests for all routes
-app.options('*', cors());
+
 
 // Global rate limiter — 200 requests per 15 minutes per IP
 const globalLimiter = rateLimit({
